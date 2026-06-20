@@ -1,27 +1,71 @@
-import random
-import time
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>칭찬도장통장</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f4eaff;
+      text-align: center;
+      padding: 50px;
+    }
+    .box {
+      background: white;
+      border-radius: 24px;
+      padding: 40px;
+      max-width: 500px;
+      margin: auto;
+      box-shadow: 0 10px 30px #d8c2ff;
+    }
+    button {
+      background: #b983ff;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 15px 30px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 30px;
+      font-size: 28px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>💜 칭찬도장 랜덤 보상 💜</h1>
+    <p>버튼을 눌러 보상을 뽑아보세요!</p>
+    <button onclick="pickReward()">🎰 보상 뽑기</button>
+    <div id="result"></div>
+  </div>
 
-rewards = [
-    ("😭 꽝!", 30),
-    ("🍦 아이스크림", 25),
-    ("🍭 편의점 간식", 20),
-    ("⭐ 도장 3개 추가", 10),
-    ("🎁 인형뽑기 5천원", 8),
-    ("🛍️ 다이소 5천원", 5),
-    ("🎨 아트박스 쇼핑", 1.5),
-    ("👑 스페셜 보상", 0.5)
-]
+  <script>
+    const rewards = [
+      { name: "😭 꽝!", weight: 30 },
+      { name: "🍦 아이스크림", weight: 25 },
+      { name: "🍭 편의점 간식", weight: 20 },
+      { name: "⭐ 도장 3개 추가", weight: 10 },
+      { name: "🎁 인형뽑기 5천원", weight: 8 },
+      { name: "🛍️ 다이소 5천원", weight: 5 },
+      { name: "🎨 아트박스 쇼핑", weight: 1.5 },
+      { name: "👑 스페셜 보상", weight: 0.5 }
+    ];
 
-items = [r[0] for r in rewards]
-weights = [r[1] for r in rewards]
+    function pickReward() {
+      const total = rewards.reduce((sum, item) => sum + item.weight, 0);
+      let random = Math.random() * total;
 
-print("🎰 보상 뽑기 중...")
-
-for i in range(10):
-    print(random.choice(items))
-    time.sleep(0.2)
-
-result = random.choices(items, weights=weights, k=1)[0]
-
-print("\n🎉 최종 결과 🎉")
-print(result)
+      for (const reward of rewards) {
+        random -= reward.weight;
+        if (random <= 0) {
+          document.getElementById("result").innerText = reward.name;
+          return;
+        }
+      }
+    }
+  </script>
+</body>
+</html>
